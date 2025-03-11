@@ -1,7 +1,7 @@
 -- Tables
-create database basic_sql_stmnt_que;
+create emp_db;
 
-use basic_sql_stmnt_que;
+use emp_db;
 
 CREATE TABLE EMP (
     EMPNO INT(4) NOT NULL,
