@@ -61,9 +61,9 @@ insert into employees values
 (emp_id, 'peter',  'england', 'pengland@company.com', STR_TO_DATE('17-DEC-1970', '%d-%b-%Y'), STR_TO_DATE('13-MAY-2021', '%d-%b-%Y'), 15000, 3),
 (emp_id, 'peter',  'parker',  'ppeter@company.com',   STR_TO_DATE('17-DEC-1996', '%d-%b-%Y'), STR_TO_DATE('30-APR-2016', '%d-%b-%Y'), 21000, 2),
 (emp_id, 'ben',    'park',    'bpark@company.com',    STR_TO_DATE('17-DEC-1994', '%d-%b-%Y'), STR_TO_DATE('25-FEB-2014', '%d-%b-%Y'), 95000, 1),
-(emp_id, 'emilia', 'clark',   'eclark@company.com',   STR_TO_DATE('17-DEC-1986', '%d-%b-%Y'), STR_TO_DATE('18-DEC-2008', '%d-%b-%Y'), 85000, 2);
+(emp_id, 'emilia', 'clark',   'eclark@company.com',   STR_TO_DATE('17-DEC-1986', '%d-%b-%Y'), STR_TO_DATE('18-DEC-2008', '%d-%b-%Y'), 85000, 2),
+(emp_id, 'emilia', 'jonson',   'ejonson@company.com',   STR_TO_DATE('17-DEC-1986', '%d-%b-%Y'), STR_TO_DATE('18-DEC-2008', '%d-%b-%Y'), 80000, null);
 select * from employees;
-
 
 insert into projects values
 (project_id, 'Project 1',    1),
@@ -72,7 +72,6 @@ insert into projects values
 (project_id, 'Project 4',    2),
 (project_id, 'Project 5', null);
 select* from projects;
-truncate projects;
 
 insert into salespersons values
 (salesman_id, 'Salesman A', 140.00),
