@@ -1,0 +1,151 @@
+example of CASE
+1. Categorize employees based on salary. 
+SELECT ename, sal,
+       CASE 
+           WHEN sal > 2500 THEN 'High'
+           WHEN sal BETWEEN 1500 AND 2500 THEN 'Medium'
+           ELSE 'Low'
+       END AS salary_category
+FROM emp;
+
+
+
+Window functions in MySQL
+
+Window functions allow you to perform calculations across a set of rows that are related to the current row within a result set. They are useful for running totals, ranking, and moving averages.
+Window functions:
+1. ROW_NUMBER(): Assigns a unique row number to each row in the result set.
+2. RANK(): Assigns a rank to each row, with gaps for ties.
+3. DENSE_RANK(): Similar to RANK(), but without gaps for ties.
+4. SUM(): Computes the sum of values over a specified window.
+5. AVG(): Computes the average value over a specified window.
+
+1. Rank the employees based on their salary.
+
+Rank the employees based on their salary in descending order (highest salary first). If two employees have the same salary, they should receive the same rank.
+
+SELECT empno, ename, sal,
+       RANK() OVER (ORDER BY sal DESC) AS salary_rank
+FROM emp;
+
+Here, RANK() gives a rank to each row based on the order specified in ORDER BY 
+Same salary will have same ran, and the next rank will have the gap.
+
+
+1*.  To rank employees within each department:
+Using Window Functions with PARTITION BY
+You can also partition the data by a specific column, so the window function is applied to each partition separately.
+
+SELECT empno, ename, deptno, sal,
+       RANK() OVER (PARTITION BY dept ORDER BY sal DESC) AS rank
+FROM emp;
+
+2. Running total(cumulative sum) of salaries
+
+SELECT empno, ename, sal,
+       SUM(sal) OVER (ORDER BY empno) AS running_total
+FROM emp;
+
+SUM(sal) - calculates the sum of salaries up to the current row
+
+ORDER BY empno ensures that the running total is calculated based on the order of empno 
+window function SUM, sums the salaries as it moves row by row.
+
+3. Find top 3 salary in each dept
+
+Here, For each department, find the top 3 highest salaries, assigning a rank to each employee within their department. 
+Employees should be ranked within their department, and the rank should restart for each department.
+Here, we can use RANK() with PARTITION BY
+
+SELECT empno, ename, dept, sal,
+       RANK() OVER (PARTITION BY dept ORDER BY sal DESC) AS dept_rank
+FROM emp
+WHERE dept_rank <= 3;
+
+Look, how PARTITION BY department resets the ranking for each department
+ORDER BY salary DESC ensures that the highest salaries get the rank of 1
+
+4. Calculate the average sal per dept and also display the employee sal along side the dept avg salary
+
+This is a case of avg window function
+
+SELECT empno, ename, dept, sal,
+       AVG(sal) OVER (PARTITION BY dept) AS avg_dept_salary
+FROM emp;
+
+Here, AVG(salary) calculates the average salary for each department.
+
+PARTITION BY department ensures that the average salary is calculated separately for each department.
+
+5. Calculate the Difference Between Each Employee’s Salary and the Average Salary of Their Department
+
+
+SELECT empno, ename, dept, sal,
+       sal - AVG(sal) OVER (PARTITION BY dept) AS sal_diff
+FROM emp;
+
+
+6.  Get Employees Who Earn More Than the Average Salary of Their Department
+
+
+SELECT empno, ename, dept, sal
+FROM emp
+WHERE sal > AVG(sal) OVER (PARTITION BY dept);
+
+Here, AVG(salary) OVER (PARTITION BY department) calculates the average salary for each department.
+
+
+7. Calculate the Difference Between Each Employee's Rank in Salary and Their Department Rank
+
+SELECT empno, ename, dept, sal,
+       RANK() OVER (ORDER BY sal DESC) AS overall_rank,
+       RANK() OVER (PARTITION BY dept ORDER BY sal DESC) AS department_rank,
+       RANK() OVER (ORDER BY sal DESC) - RANK() OVER (PARTITION BY dept ORDER BY sal DESC) AS rank_diff
+FROM emp;
+
+
+Rememeber, Use PARTITION BY to partition the data and order it with ORER BY to control scope of window function.
+
+
+
+ROW_NUMBER() examples
+
+1. Rank employees by salary
+
+SELECT empno, ename, sal,
+       ROW_NUMBER() OVER (ORDER BY sal DESC) AS row_num
+FROM emp;
+
+It looks similar to query using RANK()
+
+SELECT empno, ename, sal,
+       RANK() OVER (ORDER BY sal DESC) AS salary_rank
+FROM emp;
+
+Right, But there is a difference??
+
+Both are used to assign sequential numbers to rows, but they behave differently when there are ties. Row number will be unique while tied rows will have same rank means same ran to rows with equal values and skips subsequent ranks
+
+
+2. Rank employees within each dept
+SELECT empno, ename, deptno, sal,
+       ROW_NUMBER() OVER (PARTITION BY dept ORDER BY sal DESC) AS pet_row_num
+FROM emp;
+
+3. Identify Duplicate Employees Based on Name
+
+SELECT empno, ename, dept, sal,
+       ROW_NUMBER() OVER (PARTITION BY ename ORDER BY empno) AS row_num
+FROM employees
+WHERE row_num = 1;
+
+
+
+
+
+
+
+
+
+
+

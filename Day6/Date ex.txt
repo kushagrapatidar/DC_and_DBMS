@@ -1,0 +1,83 @@
+Date ex
+
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    birth_date DATE
+);
+
+INSERT INTO employees (name, birth_date) 
+VALUES ('John Doe', '2025-01-25');
+
+SELECT * FROM employees WHERE birth_date = '2025-01-25';
+
+SELECT CURDATE();
+
+SELECT DATE_ADD('2025-01-25', INTERVAL 1 YEAR);
+
+SELECT DATEDIFF('2025-03-12', '1990-05-25');
+----output: 12797 (number of days between the two dates)
+
+
+SELECT DATE_FORMAT(birth_date, '%d-%m-%Y') AS formatted_date FROM employees;
+
+----------------------------------------------------------------------
+
+IFNULL(expression, replacement_value)
+
+expression: The value or column to check.
+replacement_value: The value to return if the expression is NULL
+
+
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    bonus DECIMAL(10, 2)
+);
+
+
+INSERT INTO employees (name, bonus)
+VALUES
+    ('John Doe', NULL),
+    ('Jane Smith', 5000.00),
+    ('Emily Davis', NULL);
+
+
+SELECT name, IFNULL(bonus, 0) AS bonus
+FROM employees;
+
+IFNULL() function can be combined with group functions (such as SUM(), AVG(), COUNT(), etc.) to handle NULL values during aggregation. This is particularly useful when you want to ensure that NULL values are treated as a specific value (like 0 or 1) during the aggregation process.
+Aggregate functions ignore the NULL values, Can be replaced with new value using IFNUL()
+
+CREATE TABLE sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(100),
+    amount DECIMAL(10, 2)
+);
+
+INSERT INTO sales (product_name, amount)
+VALUES
+    ('Product A', 100.00),
+    ('Product B', NULL),
+    ('Product C', 50.00),
+    ('Product D', NULL),
+    ('Product E', 75.00);
+
+
+SELECT product_name, IFNULL(SUM(amount), 0) AS total_sales
+FROM sales
+GROUP BY product_name;
+
+Here, 
+1. SUM(amount) will add up all the sales amounts.
+2. IFNULL(SUM(amount), 0) ensures that if the sum is NULL (which can happen if all rows for a product have NULL values), it will be replaced by 0.
+3. The query groups by product_name, so we get the sum for each product.
+
+
+eg:
+SELECT product_name, IFNULL(COUNT(amount), 0) AS sales_count
+FROM sales
+GROUP BY product_name;
+
+Here Observe that, COUNT(amount) will count the non-NULL values in the amount column for each product.
+IFNULL(COUNT(amount), 0) ensures that if a product has no sales (amount is NULL for all rows), the result will show 0.
