@@ -83,14 +83,14 @@ insert into salespersons values
 select * from salespersons;
 
 insert into customers values
-(customer_id, 'Customer A', 'Loc A',  6),
-(customer_id, 'Customer B', 'Loc B',  8),
-(customer_id, 'Customer C', 'Loc A',  9),
-(customer_id, 'Customer D', 'Loc C', 10),
-(customer_id, 'Customer E', 'Loc B',  7),
-(customer_id, 'Customer F', 'Loc B',  6),
-(customer_id, 'Customer G', 'Loc A',  8),
-(customer_id, 'Customer H', 'Loc A',  7),
-(customer_id, 'Customer I', 'Loc C',  7),
-(customer_id, 'Customer J', 'Loc B', 10);
+(customer_id, 'Customer A', 'Loc A',  1),
+(customer_id, 'Customer B', 'Loc B',  3),
+(customer_id, 'Customer C', 'Loc A',  4),
+(customer_id, 'Customer D', 'Loc C',  5),
+(customer_id, 'Customer E', 'Loc B',  2),
+(customer_id, 'Customer F', 'Loc B',  1),
+(customer_id, 'Customer G', 'Loc A',  3),
+(customer_id, 'Customer H', 'Loc A',  2),
+(customer_id, 'Customer I', 'Loc C',  2),
+(customer_id, 'Customer J', 'Loc B',  5);
 select * from customers;
