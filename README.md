@@ -7,7 +7,7 @@
   ## **5. [Day5: ](https://github.com/kushagrapatidar/DC_and_DBMS/tree/main/Day5)** Finished
   ## **6. [Day6: ](https://github.com/kushagrapatidar/DC_and_DBMS/tree/main/Day6)** Finished
   ## **7. [Day7: ](https://github.com/kushagrapatidar/DC_and_DBMS/tree/main/Day7)** Finished
-  ## **7. [Day8: ](https://github.com/kushagrapatidar/DC_and_DBMS/tree/main/Day8)** Theory and Reading
+  ## **8. [Day8: ](https://github.com/kushagrapatidar/DC_and_DBMS/tree/main/Day8)** Theory and Reading
   ## **9. [Miscellaneous: ](https://github.com/kushagrapatidar/DC_and_DBMS/tree/main/Miscellaneous)** sql_lab_practice_questions.sql
 
 # **Database Links**
