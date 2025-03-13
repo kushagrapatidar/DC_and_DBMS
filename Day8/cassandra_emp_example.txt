@@ -1,0 +1,141 @@
+1. start Docker on desktop
+2. run container start /stop from ui
+3. cmd
+C:\Users\Acer>docker ps
+C:\Users\Acer>docker images
+
+4. C:\Users\Acer>docker exec -it 5496ce1ec1df bash
+change the appropriate container id from the docker ps id
+
+5. cqlsh
+will start Cassandra cmd line shell
+--------
+describe keyspaces
+
+Create the Keyspace  
+CREATE KEYSPACE IF NOT EXISTS company
+WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+
+USE company;
+
+CREATE TABLE emp (
+    emp_id UUID PRIMARY KEY,
+    emp_name TEXT,
+    emp_salary DECIMAL,
+    emp_department TEXT
+);
+
+
+-- Insert a few employee records
+INSERT INTO emp (emp_id, emp_name, emp_salary, emp_department) 
+VALUES (uuid(), 'Alice Johnson', 75000.00, 'Engineering');
+
+INSERT INTO emp (emp_id, emp_name, emp_salary, emp_department) 
+VALUES (uuid(), 'Bob Smith', 65000.00, 'Sales');
+
+INSERT INTO emp (emp_id, emp_name, emp_salary, emp_department) 
+VALUES (uuid(), 'Charlie Brown', 85000.00, 'Marketing');
+
+
+-- Retrieve all employees
+SELECT * FROM emp;
+
+-- Retrieve employees from the 'Engineering' department
+SELECT * FROM emp WHERE emp_department = 'Engineering';
+Allow filtering it will work 
+SELECT * FROM emp WHERE emp_department = 'Engineering' ALLOW FILTERING;
+
+
+
+UPDATE emp 
+SET emp_salary = 70000.00
+WHERE emp_id = <bob_smith_emp_id>; 
+
+Add these query 
+UPDATE emp
+           ... SET emp_salary = 70000.00
+           ... WHERE emp_id = 50eb9d5d-ede7-4ef8-8730-27bfb68808ae;
+<bob_smith_emp_id> replaced the uuid created there 
+
+DELETE FROM emp 
+WHERE emp_id = <charlie_brown_emp_id>;
+Where emp_id =  05d2efb1-cccc-4c94-97eb-fd37302fa82d
+
+WHERE clause:
+The WHERE clause in Cassandra can be used, but it has limitations. You can only query by columns that are part of the primary key or indexed columns.
+
+SELECT * FROM emp WHERE emp_id = <some-uuid>;
+
+example 
+SELECT * FROM emp WHERE emp_id =  50eb9d5d-ede7-4ef8-8730-27bfb68808ae;
+
+Example of querying with secondary index:
+CREATE INDEX IF NOT EXISTS idx_emp_department ON emp(emp_department);
+
+SELECT * FROM emp WHERE emp_department = 'Engineering'; these show errors as allow filtering 
+
+SELECT * FROM emp WHERE emp_department = 'Engineering' ALLOW FILTERING;
+
+ALLOW FILTERING Clause
+If you want to perform queries on columns that are not part of the primary key (and without creating an index), you can use the ALLOW FILTERING clause. 
+-- This will work but may be inefficient for large datasets
+SELECT * FROM emp WHERE emp_name = 'Alice Johnson' ALLOW FILTERING;
+
+IN clause-  Supported for partition keys or indexed columns.
+-- Select employees from multiple departments
+SELECT * FROM emp WHERE emp_department IN ('Engineering', 'Sales') ALLOW FILTERING;
+
+ORDER BY Clause, Can only order by clustering keys.
+
+
+Group by- Not supported, use aggregation functions with partitions instead.
+-- Counting the number of employees in each department (only within the same partition)
+SELECT emp_department, COUNT(*) FROM emp GROUP BY emp_department;
+                    or 
+ SELECT emp_department, COUNT(*)
+           ... FROM emp
+           ... WHERE emp_department = 'Sales' ALLOW FILTERING;
+
+Limit - Supported and useful for restricting query results.
+
+-- Get the first 10 employees in the 'Engineering' department
+SELECT * FROM emp WHERE emp_department = 'Engineering' LIMIT 10;
+
+
+
+
+DROP TABLE IF EXISTS emp;
+DROP KEYSPACE IF EXISTS company;
+
+-----------------
+Partition Keys and Clustering Keys
+used to organize data and control how it is distributed and accessed across nodes in a Cassandra cluster.
+
+
+Partition Key determines how data is distributed across the nodes in the Cassandra cluster. It is the key that defines which node in the cluster stores the data for a particular row.
+
+Cassandra uses the partition key to hash the data and decide on which node (or set of nodes) the data will be stored. All rows with the same partition key are stored together on the same node. By organizing data into partitions, Cassandra ensures that queries that access data within the same partition are efficient, as the data will be located on the same node
+A partition key can consist of one or more columns.
+
+
+CREATE TABLE IF NOT EXISTS emp (
+    emp_id UUID,
+    emp_name TEXT,
+    emp_department TEXT,
+    emp_salary DECIMAL,
+    PRIMARY KEY (emp_id, emp_department)
+);
+
+
+emp_id is the Partition Key because it uniquely identifies the partition.
+The emp_department is the Clustering Key
+
+Clustering key determines the order of the rows within a partition. Rows with the same partition key (i.e., stored on the same node) are organized and sorted based on the clustering key.
+
+Example of Querying by Partition Key:
+SELECT * FROM sales WHERE region = 'NorthAmerica' AND year = 2023;
+
+Example of Querying with Clustering Key:
+
+SELECT * FROM sales WHERE region = 'NorthAmerica' AND year = 2023 AND month = 1;
