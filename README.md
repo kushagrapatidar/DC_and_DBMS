@@ -11,6 +11,6 @@
   ## **9. [Miscellaneous: ](https://github.com/kushagrapatidar/DC_and_DBMS/tree/main/Miscellaneous)** sql_lab_practice_questions.sql
 
 # **Database Links**
-  ## **[Oracle Databases](https://livesql.oracle.com/ords/f?p=590:49::::RP,49:P49_TYPES:C)**
-  ## **[Mongo Databases](https://www.mongodb.com/docs/manual/introduction/)**
-  ## **[Cassandra Databases](https://cassandra.apache.org/_/quickstart.html)**
+  ## **[Oracle Database Documentation](https://livesql.oracle.com/ords/f?p=590:49::::RP,49:P49_TYPES:C)**
+  ## **[Mongo Database Documentation](https://www.mongodb.com/docs/manual/introduction/)**
+  ## **[Cassandra Database Documentation](https://cassandra.apache.org/_/quickstart.html)**
