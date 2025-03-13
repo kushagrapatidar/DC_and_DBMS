@@ -12,3 +12,5 @@
 
 # **Database Links**
   ## **[Oracle Databases](https://livesql.oracle.com/ords/f?p=590:49::::RP,49:P49_TYPES:C)**
+  ## **[Mongo Databases](https://www.mongodb.com/docs/manual/introduction/)**
+  ## **[Cassandra Databases](https://cassandra.apache.org/_/quickstart.html)**
